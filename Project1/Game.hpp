@@ -21,7 +21,7 @@ public:
 	void render();
 	void clean();
 	
-	
+	void spawn(GameObject* obj);
 	static SDL_Renderer* renderer;
 	std::vector<GameObject*> sceneObjects;
 private:

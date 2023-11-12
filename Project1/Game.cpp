@@ -45,6 +45,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	player = new Player("assets/volume_ellipse.png", 0,0, 153,153);
 	
+	player->game = this;
+
 	for (int i = 0; i < 100; i++) {
 		sceneObjects.push_back(new GameObject("assets/volume_ellipse.png", 100*i, 0, 100, 100));
 	}
@@ -86,4 +88,9 @@ void Game::clean()
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 	std::cout << "game cleaned" << std::endl;
+}
+
+void Game::spawn(GameObject* obj)
+{
+	sceneObjects.push_back(obj);
 }

@@ -20,3 +20,8 @@ bool General::collisionCheck(SDL_Rect* A, SDL_Rect* B)
 	bool bVertical = (A->y < B->y + B->h && B->y < A->y + A->h);
 	return bHorizontal && bVertical;
 }
+
+float General::deg2rad(float deg)
+{
+    return deg * 3.14 / 180;
+}

@@ -1,12 +1,13 @@
 #include "Player.h"
 #include "General.h"
+#include "Bullet.h"
 #include <stdlib.h>
 
 Player::Player(const char* texture, int x, int y, int width, int height) :GameObject(texture, x, y, width, height)
 {
 	h_speed = v_speed = 0;
 	head_rot = 0;
-
+	speed = 0.2;
 	
 
 	srcHeadRect.h = 64;
@@ -61,32 +62,6 @@ void Player::Render()
 	SDL_RenderCopyEx(Game::renderer, head, &srcHeadRect, &destHeadRect, head_rot, NULL, SDL_FLIP_NONE);
 }
 
-void Player::moveRight()
-{
-		
-	h_speed = 1;
-
-	
-	
-}
-
-void Player::moveLeft()
-{
-	
-	h_speed = -1;
-}
-
-void Player::moveUp()
-{
-	
-	v_speed = -1;
-}
-
-void Player::moveDown()
-{
-	
-	v_speed = 1;
-}
 
 void Player::stop()
 {
@@ -100,8 +75,8 @@ SDL_Rect* Player::GetCollisionBox()
 	colRect.y = destRect.y;
 	colRect.w = destRect.w;
 	colRect.h = destRect.h;
-	colRect.x = xpos + h_speed * deltaTime - origin_x;
-	colRect.y = ypos + v_speed * deltaTime - origin_y;
+	colRect.x = xpos + h_speed - origin_x;
+	colRect.y = ypos + v_speed - origin_y;
 	return &colRect;
 }
 
@@ -117,17 +92,28 @@ void Player::handleEvents()
 	case SDL_KEYDOWN:
 		switch (event.key.keysym.sym) {
 		case SDLK_LEFT:
-			moveLeft();
+		case SDLK_a:
+			h_speed = -speed;
+			v_speed = 0;
 			break;
 		case SDLK_RIGHT:
-			moveRight();
+		case SDLK_d:
+			h_speed = speed;
+			v_speed = 0;
 			break;
 
 		case SDLK_UP:
-			moveUp();
+		case SDLK_w:
+			v_speed = -speed;
+			h_speed = 0;
 			break;
 		case SDLK_DOWN:
-			moveDown();
+		case SDLK_s:
+			v_speed = speed;
+			h_speed = 0;
+			break;
+		case SDLK_q:
+			fire();
 			break;
 		}
 	
@@ -136,16 +122,20 @@ void Player::handleEvents()
 	case SDL_KEYUP:
 		switch (event.key.keysym.sym) {
 		case SDLK_LEFT:
+		case SDLK_a:
 			h_speed = 0;
 			break;
 		case SDLK_RIGHT:
+		case SDLK_d:
 			h_speed = 0;
 			break;
 
 		case SDLK_UP:
+		case SDLK_w:
 			v_speed = 0;
 			break;
 		case SDLK_DOWN:
+		case SDLK_s:
 			v_speed = 0;
 			break;
 		}
@@ -158,6 +148,17 @@ void Player::handleEvents()
 	default:
 		break;
 	}
+}
+
+void Player::fire()
+{
+//spawn bullet
+
+	double b_x = origin_x + screen_width/2 + cosf(General::deg2rad(head_rot - 90))  * 200;
+	double b_y = origin_y + screen_height / 2 + sinf(General::deg2rad(head_rot - 90)) * 200;
+	std::cout << head_rot << std::endl;
+	Bullet* bullet = new Bullet("assets/volume_ellipse.png",  b_x, b_y, 10, 10);
+	game->spawn(bullet);
 }
 
 
