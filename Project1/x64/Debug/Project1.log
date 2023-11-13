@@ -1,11 +1,12 @@
 ﻿  Player.cpp
-D:\CodeProjects\SDLTank\Project1\Player.cpp(45,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(46,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(78,29): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(79,29): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(86,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(157,74): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(158,77): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(160,65): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(160,60): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  Project1.vcxproj -> D:\CodeProjects\SDLTank\x64\Debug\Project1.exe
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(45,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(46,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(78,29): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(79,29): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(86,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(156,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(157,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(158,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(160,113): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\DS\source\repos\Project1\Project1\Player.cpp(160,108): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Project1.vcxproj -> C:\Users\DS\source\repos\Project1\x64\Debug\Project1.exe

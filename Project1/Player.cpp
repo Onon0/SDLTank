@@ -39,7 +39,7 @@ void Player::Update()
 	origin_x = origin_x + h_speed * deltaTime;
 	origin_y = origin_y + v_speed * deltaTime;
 	
-	xpos =   xpos + h_speed * deltaTime;
+	xpos =  xpos + h_speed * deltaTime;
 	ypos =  ypos + v_speed * deltaTime;
 
 	destRect.x = xpos - origin_x;
@@ -153,11 +153,11 @@ void Player::handleEvents()
 void Player::fire()
 {
 //spawn bullet
-
-	double b_x = origin_x + screen_width/2 + cosf(General::deg2rad(head_rot - 90))  * 200;
-	double b_y = origin_y + screen_height / 2 + sinf(General::deg2rad(head_rot - 90)) * 200;
-	std::cout << head_rot << std::endl;
-	Bullet* bullet = new Bullet("assets/volume_ellipse.png",  b_x, b_y, 10, 10);
+	double rad = General::deg2rad(head_rot - 90);
+	double b_x = origin_x + screen_width/2 + cosf(rad)  * 100;
+	double b_y = origin_y + screen_height / 2 + sinf(rad) * 100;
+	
+	Bullet* bullet = new Bullet("assets/volume_ellipse.png", xpos + destRect.w/2, ypos + destRect.h / 2, rad, b_x, b_y, 10, 10);
 	game->spawn(bullet);
 }
 
