@@ -1,7 +1,10 @@
 #include "Game.hpp"
 #include "TextureManager.h"
 #include "General.h"
-#include "Player.h"
+#include <cmath>
+std::vector<GameObject*> Game::sceneObjects;
+std::vector<Enemy*> Game::enemyObjects;
+
 Player* player;
 
 SDL_Renderer* Game::renderer = nullptr;
@@ -12,6 +15,7 @@ int screen_width = 600;
 int screen_height = 600;
 
 double deltaTime = 0;
+double stime = 0;
 bool isRunning = true;
 Game::Game()
 {
@@ -43,12 +47,16 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	
 	isRunning = true;
 
-	player = new Player("assets/volume_ellipse.png", 0,0, 153,153);
+	player = new Player("assets/volume_ellipse.png", 0,-100, 100,100, true);
 	
-	player->game = this;
+	
+	
+	for (int i = 0; i < 10; i++) {
+		Game:: sceneObjects.push_back(new GameObject("assets/volume_ellipse.png", 120 * i, 200 + 120 * i, 100, 100));
+	}
 
-	for (int i = 0; i < 100; i++) {
-		sceneObjects.push_back(new GameObject("assets/volume_ellipse.png", 100*i, 0, 100, 100));
+	for (int i = 0; i < 5; i++) {
+		Game::enemyObjects.push_back(new Enemy("assets/volume_ellipse.png", 120 * i, 400 + 110 * i, 100, 100));
 	}
 
 }
@@ -59,16 +67,24 @@ void Game::update()
 {
 	player->handleEvents();
 	
-	bool b = true;
+	player->setCollided(false);
 	for (int i = 0; i < sceneObjects.size(); i++){
 		
 		sceneObjects[i]->Update();
 		if (General::collisionCheck(player->GetCollisionBox(), sceneObjects[i]->getDestRect())) {
-			b = false;
+			player->setCollided(true);
 		}
 	}
-	if (b) player->Update();
-	
+	for (Enemy* enemy : enemyObjects) {
+		enemy->Update();
+	}
+	player->Update();
+	if((int)ceil(stime) % 2 == 0)
+	{
+		for (Enemy* enemy : enemyObjects) {
+			enemy->handleMovement();
+		}
+	}
 		
 }
 
@@ -76,9 +92,14 @@ void Game::render()
 {
 	SDL_RenderClear(renderer);
 	player->Render();
-	for (int i = 0; i < sceneObjects.size(); i++) {
-		sceneObjects[i]->Render();
+	for (GameObject* go: sceneObjects) {
+		go->Render();
 	}
+
+	for(Enemy* enemy: enemyObjects) {
+		enemy->Render();
+	}
+
 	SDL_RenderPresent(renderer);
 }
 

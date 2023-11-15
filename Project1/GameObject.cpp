@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "Game.hpp"
 #include "TextureManager.h"
 #include "Camera.h"
 GameObject::GameObject(const char* texturesheet, int x, int y, int width, int height)

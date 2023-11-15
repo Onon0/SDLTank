@@ -1,4 +1,5 @@
 #include "Game.hpp"
+
 Game* game = nullptr;
 
 
@@ -13,7 +14,7 @@ int main(int argc, char* argv[]) {
 		LAST = NOW;
 		NOW = SDL_GetPerformanceCounter();
 		deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
-
+		stime += deltaTime/1000;
 		
 		game->update();
 		game->render();
