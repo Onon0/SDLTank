@@ -6,6 +6,7 @@ class Bullet: public GameObject
 public:
 	Bullet(const char* texture, double start_x, double start_y, double deg, int x, int y, int width, int height);
 	void Update() override;
+	double getDistance() { return distance; };
 private:
 	double start_x;
 	double start_y;

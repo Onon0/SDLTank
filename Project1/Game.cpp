@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "TextureManager.h"
 #include "General.h"
+#include "Bullet.h"
 #include <cmath>
 std::list<GameObject*> Game::sceneObjects;
 std::list<Enemy*> Game::enemyObjects;
@@ -104,16 +105,32 @@ void Game::update()
 
 		enemy->Update();
 	}
-	for (GameObject* bullet : bulletObjects) {
-		bullet->Update();
-
-		for (GameObject* go : sceneObjects) {
-			if (General::collisionCheck(bullet->getDestRect(), go->getDestRect())) {
-				sceneObjects.remove(go);
-				bulletObjects.remove(bullet);
-				break;
-			}
+	std::list<GameObject*>::iterator i = bulletObjects.begin();
+	while (i != bulletObjects.end()) {
+		(*i)->Update();
+		
+		bool b = false;
+		
+		if (dynamic_cast<Bullet*>(*i)->getDistance() > 500) {
+			bulletObjects.erase(i++);
+			continue;
 		}
+		
+		
+
+		
+		for (GameObject* go : sceneObjects) {
+			if (General::collisionCheck((*i)->getDestRect(), go->getDestRect())) {
+				sceneObjects.remove(go);
+				bulletObjects.erase(i++);
+				b = true;
+				break;
+				
+			}
+
+		}
+		if (!b) i++;
+		
 	}
 
 	

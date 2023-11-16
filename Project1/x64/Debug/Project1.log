@@ -1,6 +1,2 @@
-﻿  Bullet.cpp
-C:\Users\DS\source\repos\Project1\Project1\Bullet.cpp(27,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\DS\source\repos\Project1\Project1\Bullet.cpp(28,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  Game.cpp
-  Generating Code...
+﻿  Game.cpp
   Project1.vcxproj -> C:\Users\DS\source\repos\Project1\x64\Debug\Project1.exe
