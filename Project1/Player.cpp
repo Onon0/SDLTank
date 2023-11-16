@@ -15,8 +15,8 @@ Player::Player(const char* texture, int x, int y, int width, int height, bool fo
 	srcHeadRect.x = 0;
 	srcHeadRect.y = 0;
 
-	destHeadRect.w = 64;
-	destHeadRect.h = 64;
+	destHeadRect.w = width;
+	destHeadRect.h = height;
 
 	colRect.x = destRect.x;
 	colRect.y = destRect.y;
@@ -31,7 +31,7 @@ Player::Player(const char* texture, int x, int y, int width, int height, bool fo
 	
 	isCollided = false;
 
-	head = IMG_LoadTexture(Game::renderer, "assets/test.png");
+	head = IMG_LoadTexture(Game::renderer, "assets/tank_top.png");
 	
 }
 
@@ -50,8 +50,8 @@ void Player::Update()
 	destRect.x = xpos - origin_x;
 	destRect.y = ypos - origin_y;
 
-	destHeadRect.x = destRect.x + 50;
-	destHeadRect.y = destRect.y + 50;
+	destHeadRect.x = destRect.x;
+	destHeadRect.y = destRect.y;
 
 	
 	

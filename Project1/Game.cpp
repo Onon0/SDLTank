@@ -50,7 +50,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	
 	isRunning = true;
 
-	player = new Player("assets/volume_ellipse.png", 0,-100, 100,100, true);
+	player = new Player("assets/tank.png", 0,-100, 100,100, true);
 	
 	
 	
@@ -59,7 +59,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	}
 
 	for (int i = 0; i < 5; i++) {
-		Game::enemyObjects.push_back(new Enemy("assets/volume_ellipse.png", 120 * i, 400 + 110 * i, 100, 100));
+		Game::enemyObjects.push_back(new Enemy("assets/tank.png", 120 * i, 400 + 110 * i, 100, 100));
 	}
 
 
