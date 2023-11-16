@@ -3,15 +3,12 @@
 #include <stdlib.h>
 Enemy::Enemy(const char* texture, int x, int y, int width, int height) : Player(texture, x, y, width, height, false)
 {
-	colRect.x = destRect.x;
-	colRect.y = destRect.y;
-	colRect.w = destRect.w;
-	colRect.h = destRect.h;
+
 }
 
 void Enemy::Update()
 {
-
+	if (isCollided) stop();
 	xpos = xpos + h_speed * deltaTime;
 	ypos = ypos + v_speed * deltaTime;
 
@@ -27,7 +24,12 @@ void Enemy::Update()
 
 void Enemy::handleMovement()
 {
-	h_speed = rand()%2 ? 1: -1;
-	h_speed = h_speed * deltaTime;
+	
+	double random = rand() % 2 ? 1 : 0;
+	double direction = rand() % 2 ? 0.1 : -0.1;
+	h_speed = random * direction;
+	v_speed = (1 - random) * direction;
+	
+	
 
 }

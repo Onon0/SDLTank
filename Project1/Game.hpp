@@ -1,8 +1,9 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Bullet.h"
 #include "Enemy.h"
-#include <vector>
+#include <list>
 #include <iostream>
 
 extern double origin_x;
@@ -26,10 +27,11 @@ public:
 	void render();
 	void clean();
 	
-	static void spawn(GameObject* obj);
+	static void spawnBullet(GameObject* obj);
 	static SDL_Renderer* renderer;
-	static std::vector<GameObject*> sceneObjects;
-	static std::vector<Enemy*> enemyObjects;
+	static std::list<GameObject*> sceneObjects;
+	static std::list<Enemy*> enemyObjects;
+	static std::list<GameObject*> bulletObjects;
 private:
 	
 	

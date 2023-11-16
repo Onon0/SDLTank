@@ -2,9 +2,9 @@
 #include "TextureManager.h"
 #include "General.h"
 #include <cmath>
-std::vector<GameObject*> Game::sceneObjects;
-std::vector<Enemy*> Game::enemyObjects;
-
+std::list<GameObject*> Game::sceneObjects;
+std::list<Enemy*> Game::enemyObjects;
+std::list<GameObject*> Game::bulletObjects;
 Player* player;
 
 SDL_Renderer* Game::renderer = nullptr;
@@ -17,6 +17,8 @@ int screen_height = 600;
 double deltaTime = 0;
 double stime = 0;
 bool isRunning = true;
+
+int temp = -1;
 Game::Game()
 {
 	
@@ -59,6 +61,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		Game::enemyObjects.push_back(new Enemy("assets/volume_ellipse.png", 120 * i, 400 + 110 * i, 100, 100));
 	}
 
+
+
 }
 
 
@@ -68,22 +72,66 @@ void Game::update()
 	player->handleEvents();
 	
 	player->setCollided(false);
-	for (int i = 0; i < sceneObjects.size(); i++){
+	
+
+	for (GameObject* go : sceneObjects){
 		
-		sceneObjects[i]->Update();
-		if (General::collisionCheck(player->GetCollisionBox(), sceneObjects[i]->getDestRect())) {
+		go->Update();
+		if (General::collisionCheck(player->GetCollisionBox(), go->getDestRect())) {
 			player->setCollided(true);
 		}
 	}
 	for (Enemy* enemy : enemyObjects) {
+		enemy->setCollided(false);
+		if (General::collisionCheck(player->GetCollisionBox(), enemy->GetCollisionBox())) {
+			enemy->setCollided(true);
+			player->setCollided(true);
+		}
+
+		for (GameObject* go : sceneObjects) {
+			if (General::collisionCheck(enemy->GetCollisionBox(), go->getDestRect())) {
+				enemy->setCollided(true);
+			}
+		}
+
+		for (Enemy* other : enemyObjects) {
+			if (enemy != other) {
+				if (General::collisionCheck(enemy->GetCollisionBox(), other->GetCollisionBox())) {
+					enemy->setCollided(true);
+				}
+			}
+		}
+
 		enemy->Update();
 	}
+	for (GameObject* bullet : bulletObjects) {
+		bullet->Update();
+
+		for (GameObject* go : sceneObjects) {
+			if (General::collisionCheck(bullet->getDestRect(), go->getDestRect())) {
+				sceneObjects.remove(go);
+				bulletObjects.remove(bullet);
+				break;
+			}
+		}
+	}
+
+	
+	
 	player->Update();
+
+
 	if((int)ceil(stime) % 2 == 0)
 	{
-		for (Enemy* enemy : enemyObjects) {
-			enemy->handleMovement();
+		if (temp != (int)ceil(stime)) {
+			temp = (int)ceil(stime);
+			
+			for (Enemy* enemy : enemyObjects) {
+
+				enemy->handleMovement();
+			}
 		}
+		
 	}
 		
 }
@@ -100,6 +148,12 @@ void Game::render()
 		enemy->Render();
 	}
 
+	for (GameObject* bullet : bulletObjects) {
+		bullet->Render();
+		
+		
+	}
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -111,7 +165,8 @@ void Game::clean()
 	std::cout << "game cleaned" << std::endl;
 }
 
-void Game::spawn(GameObject* obj)
+void Game::spawnBullet(GameObject* obj)
 {
-	sceneObjects.push_back(obj);
+	
+	bulletObjects.push_back(obj);
 }

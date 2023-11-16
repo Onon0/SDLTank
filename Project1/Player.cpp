@@ -162,7 +162,7 @@ void Player::fire()
 	
 	Bullet* bullet = new Bullet("assets/volume_ellipse.png", xpos + destRect.w/2, ypos + destRect.h / 2, rad, b_x, b_y, 10, 10);
 	
-	Game::spawn(bullet);
+	Game::spawnBullet(bullet);
 }
 
 

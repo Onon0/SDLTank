@@ -8,8 +8,7 @@ public:
 	GameObject(const char* texturesheet, int x, int y, int width, int height);
 	~GameObject();
 	virtual void Update();
-	virtual void Render();
-	
+	virtual void Render();	
 	SDL_Rect* getDestRect();
 	
 protected:
