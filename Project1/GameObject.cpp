@@ -2,10 +2,12 @@
 #include "Game.hpp"
 #include "TextureManager.h"
 #include "Camera.h"
+#include <chrono>
 GameObject::GameObject(const char* texturesheet, int x, int y, int width, int height)
 {
 	
 	this->objTexture = TextureManager::loadTexture(texturesheet);
+	id = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 	xpos = x;
 	ypos = y;
 	srcRect.h = 153;

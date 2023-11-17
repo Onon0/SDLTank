@@ -50,16 +50,16 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	
 	isRunning = true;
 
-	player = new Player("assets/tank.png", 0,-100, 100,100, true);
+	player = new Player("assets/tank.png", 0,-100, 128,128, true);
 	
 	
 	
 	for (int i = 0; i < 10; i++) {
-		Game:: sceneObjects.push_back(new GameObject("assets/volume_ellipse.png", 120 * i, 200 + 120 * i, 100, 100));
+		Game:: sceneObjects.push_back(new GameObject("assets/volume_ellipse.png", 200 * i, 200 + 200 * i, 128, 128));
 	}
 
 	for (int i = 0; i < 5; i++) {
-		Game::enemyObjects.push_back(new Enemy("assets/tank.png", 120 * i, 400 + 110 * i, 100, 100));
+		Game::enemyObjects.push_back(new Enemy("assets/tank.png", 200 * i, 400 + 200 * i, 128, 128, player));
 	}
 
 
@@ -106,34 +106,73 @@ void Game::update()
 		enemy->Update();
 	}
 	std::list<GameObject*>::iterator i = bulletObjects.begin();
+	
 	while (i != bulletObjects.end()) {
 		(*i)->Update();
 		
 		bool b = false;
-		
+		//destroy bullet after certain distance
 		if (dynamic_cast<Bullet*>(*i)->getDistance() > 500) {
 			bulletObjects.erase(i++);
-			continue;
+			b = true;
 		}
-		
-		
+		//player hit
+		if (General::collisionCheck(player->getDestRect(), (*i)->getDestRect())) {
+			if (dynamic_cast<Bullet*>(*i)->owner->getID() != player->getID()) {
+			
+				
 
-		
+				//hit player
+				player->getHit(dynamic_cast<Bullet*>(*i)->getDamage());
+				std::cout << player->getLife() << std::endl;
+				if (player->getLife() == 0) {
+					std::cout << "game over" << std::endl;
+				}
+				bulletObjects.erase(i++);
+				b = true;
+			}//*/
+			
+		}
+
+		//destoy bullet if hit obstacle.
 		for (GameObject* go : sceneObjects) {
 			if (General::collisionCheck((*i)->getDestRect(), go->getDestRect())) {
 				sceneObjects.remove(go);
 				bulletObjects.erase(i++);
+				
 				b = true;
 				break;
 				
 			}
 
 		}
+
+		for (Enemy* enemy : enemyObjects) {
+			if (General::collisionCheck((*i)->getDestRect(), enemy->getDestRect())) {
+				
+				//hit enemy damage
+				if (dynamic_cast<Bullet*>(*i)->owner->getID() != enemy->getID()) {
+					enemy->getHit(dynamic_cast<Bullet*>(*i)->getDamage());
+					//enemy dies
+					if (enemy->getLife() == 0) enemyObjects.remove(enemy);
+					bulletObjects.erase(i++);
+					b = true;
+					break;
+				}
+					
+				
+				
+
+			}
+
+		}
+
+
 		if (!b) i++;
 		
 	}
 
-	
+	//*/
 	
 	player->Update();
 
@@ -146,6 +185,7 @@ void Game::update()
 			for (Enemy* enemy : enemyObjects) {
 
 				enemy->handleMovement();
+
 			}
 		}
 		

@@ -1,12 +1,2 @@
-﻿  Player.cpp
-D:\CodeProjects\SDLTank\Project1\Player.cpp(50,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(51,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(81,34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(82,34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(89,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(159,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(160,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(161,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(163,113): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-D:\CodeProjects\SDLTank\Project1\Player.cpp(163,108): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  Project1.vcxproj -> D:\CodeProjects\SDLTank\x64\Debug\Project1.exe
+﻿  Game.cpp
+  Project1.vcxproj -> C:\Users\DS\source\repos\Project1\x64\Debug\Project1.exe

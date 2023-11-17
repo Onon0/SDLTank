@@ -7,9 +7,10 @@ Player::Player(const char* texture, int x, int y, int width, int height, bool fo
 {
 	h_speed = v_speed = 0;
 	head_rot = 0;
+	body_rot = 0;
 	speed = 0.1;
 	
-
+	life = 100;
 	srcHeadRect.h = 64;
 	srcHeadRect.w = 64;
 	srcHeadRect.x = 0;
@@ -64,7 +65,10 @@ void Player::Render()
 	SDL_SetRenderDrawColor(Game::renderer, 255, 0, 0, 255);
 	SDL_RenderDrawRect(Game::renderer, &colRect);
 	SDL_SetRenderDrawColor(Game::renderer, 0, 0, 0, 255);
-	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
+	if(!(h_speed == 0 && v_speed == 0))
+		body_rot = h_speed == 0 ? 0 : 90;
+
+	SDL_RenderCopyEx(Game::renderer, objTexture, &srcRect, &destRect, body_rot ,NULL, SDL_FLIP_NONE);
 	SDL_RenderCopyEx(Game::renderer, head, &srcHeadRect, &destHeadRect, head_rot, NULL, SDL_FLIP_NONE);
 }
 
@@ -160,9 +164,14 @@ void Player::fire()
 	double b_x = origin_x + screen_width/2 + cosf(rad)  * 100;
 	double b_y = origin_y + screen_height / 2 + sinf(rad) * 100;
 	
-	Bullet* bullet = new Bullet("assets/volume_ellipse.png", xpos + destRect.w/2, ypos + destRect.h / 2, rad, b_x, b_y, 10, 10);
+	Bullet* bullet = new Bullet(this, "assets/volume_ellipse.png", xpos + destRect.w/2, ypos + destRect.h / 2, rad, b_x, b_y, 10, 10);
 	
 	Game::spawnBullet(bullet);
+}
+
+void Player::getHit(double damage)
+{
+	life -= damage;
 }
 
 

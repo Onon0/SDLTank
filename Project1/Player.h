@@ -22,16 +22,20 @@ public:
 	void handleEvents();
 	
 	void setHeadRot(int rot) { head_rot = rot; };
-
+	double getLife() { return life; };
 	void fire();
+	void getHit(double damage);
+
 protected:
 	double v_speed;
 	double h_speed;
 
 	double speed;
-
+	double life;
 	int xMouse, yMouse;
+	int body_rot;
 	int head_rot;
+
 	bool isCollided;
 	bool followCamera;
 

@@ -10,8 +10,9 @@ public:
 	virtual void Update();
 	virtual void Render();	
 	SDL_Rect* getDestRect();
-	
+	int getID() { return id; };
 protected:
+	int id;
 	double xpos;
 	double ypos;
 	

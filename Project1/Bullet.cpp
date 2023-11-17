@@ -1,8 +1,9 @@
 #include "Bullet.h"
 
 
-Bullet::Bullet(const char* texture, double start_x, double start_y, double deg,  int x, int y, int width, int height) :GameObject(texture, x, y, width, height)
+Bullet::Bullet(GameObject* owner, const char* texture, double start_x, double start_y, double deg,  int x, int y, int width, int height) :GameObject(texture, x, y, width, height)
 {
+	this->owner = owner;
 	this->start_x = start_x;
 	this->start_y = start_y;
 	end_x = cos(deg) + start_x;
@@ -10,7 +11,7 @@ Bullet::Bullet(const char* texture, double start_x, double start_y, double deg, 
 	distance = 0;
 	vector_x = end_x - start_x;
 	vector_y = end_y - start_y;
-	//std::cout<< " dsa \n";
+	damage = 10;
 }
 
 void Bullet::Update()

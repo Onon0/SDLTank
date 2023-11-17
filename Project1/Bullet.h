@@ -4,9 +4,12 @@
 class Bullet: public GameObject
 {
 public:
-	Bullet(const char* texture, double start_x, double start_y, double deg, int x, int y, int width, int height);
+	Bullet(GameObject* owner, const char* texture, double start_x, double start_y, double deg, int x, int y, int width, int height);
 	void Update() override;
 	double getDistance() { return distance; };
+	double getDamage() { return damage; };
+
+	GameObject* owner;
 private:
 	double start_x;
 	double start_y;
@@ -15,5 +18,6 @@ private:
 	double vector_x;
 	double vector_y;
 	double distance;
+	double damage;
 };
 
