@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include <list>
+#include<vector>
 #include <iostream>
 
 extern double origin_x;
@@ -30,8 +31,8 @@ public:
 	static void spawnBullet(GameObject* obj);
 	static SDL_Renderer* renderer;
 	static std::list<GameObject*> sceneObjects;
-	static std::list<Enemy*> enemyObjects;
-	static std::list<GameObject*> bulletObjects;
+	static std::vector<Enemy*> enemyObjects;
+	static std::vector<GameObject*> bulletObjects;
 private:
 	
 	

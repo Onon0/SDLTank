@@ -1,2 +1,32 @@
-﻿  Game.cpp
-  Project1.vcxproj -> C:\Users\DS\source\repos\Project1\x64\Debug\Project1.exe
+﻿  Bullet.cpp
+D:\CodeProjects\SDLTank\Project1\Bullet.cpp(28,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Bullet.cpp(29,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  Enemy.cpp
+D:\CodeProjects\SDLTank\Project1\Enemy.cpp(18,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Enemy.cpp(19,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Enemy.cpp(57,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Game.cpp
+  GameObject.cpp
+D:\CodeProjects\SDLTank\Project1\GameObject.cpp(10,119): warning C4244: '=': conversion from '_Rep' to 'int', possible loss of data
+          with
+          [
+              _Rep=__int64
+          ]
+D:\CodeProjects\SDLTank\Project1\GameObject.cpp(26,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\GameObject.cpp(27,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  Player.cpp
+D:\CodeProjects\SDLTank\Project1\Player.cpp(51,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Player.cpp(52,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Player.cpp(85,34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Player.cpp(86,34): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Player.cpp(93,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Player.cpp(163,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Player.cpp(164,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Player.cpp(165,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Player.cpp(167,119): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+D:\CodeProjects\SDLTank\Project1\Player.cpp(167,114): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  TextureManager.cpp
+  main.cpp
+D:\CodeProjects\SDLTank\Project1\main.cpp(23,16): warning C4244: '=': conversion from 'Uint64' to 'double', possible loss of data
+  Generating Code...
+  Project1.vcxproj -> D:\CodeProjects\SDLTank\x64\Debug\Project1.exe

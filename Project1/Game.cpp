@@ -4,8 +4,8 @@
 #include "Bullet.h"
 #include <cmath>
 std::list<GameObject*> Game::sceneObjects;
-std::list<Enemy*> Game::enemyObjects;
-std::list<GameObject*> Game::bulletObjects;
+std::vector<Enemy*> Game::enemyObjects;
+std::vector<GameObject*> Game::bulletObjects;
 Player* player;
 
 SDL_Renderer* Game::renderer = nullptr;
@@ -73,7 +73,7 @@ void Game::update()
 	player->handleEvents();
 	
 	player->setCollided(false);
-	
+	int i = 0;
 
 	for (GameObject* go : sceneObjects){
 		
@@ -82,7 +82,42 @@ void Game::update()
 			player->setCollided(true);
 		}
 	}
-	for (Enemy* enemy : enemyObjects) {
+	if (enemyObjects.size() > 0) {
+		i = 0;
+		while (i < enemyObjects.size()) {
+			enemyObjects[i]->setCollided(false);
+			if (General::collisionCheck(player->GetCollisionBox(), enemyObjects[i]->GetCollisionBox())) {
+				enemyObjects[i]->setCollided(true);
+				player->setCollided(true);
+			}
+
+			for (GameObject* go : sceneObjects) {
+				if (General::collisionCheck(enemyObjects[i]->GetCollisionBox(), go->getDestRect())) {
+					enemyObjects[i]->setCollided(true);
+				}
+			}
+
+			for (Enemy* other : enemyObjects) {
+				if (enemyObjects[i] != other) {
+					if (General::collisionCheck(enemyObjects[i]->GetCollisionBox(), other->GetCollisionBox())) {
+						enemyObjects[i]->setCollided(true);
+					}
+				}
+			}
+			if (!enemyObjects[i]->destroyed) {
+				enemyObjects[i]->Update();
+				i++;
+			}
+			else {
+				GameObject* temp_enemy =  enemyObjects[i];
+				enemyObjects.erase(enemyObjects.begin() + i);
+
+				
+				
+			}
+		}
+	}
+	/*for (Enemy* enemy : enemyObjects) {
 		enemy->setCollided(false);
 		if (General::collisionCheck(player->GetCollisionBox(), enemy->GetCollisionBox())) {
 			enemy->setCollided(true);
@@ -104,76 +139,37 @@ void Game::update()
 		}
 
 		enemy->Update();
-	}
-	std::list<GameObject*>::iterator i = bulletObjects.begin();
+	}//*/
 	
-	while (i != bulletObjects.end()) {
-		(*i)->Update();
-		
-		bool b = false;
-		//destroy bullet after certain distance
-		if (dynamic_cast<Bullet*>(*i)->getDistance() > 500) {
-			bulletObjects.erase(i++);
-			b = true;
-		}
-		//player hit
-		if (General::collisionCheck(player->getDestRect(), (*i)->getDestRect())) {
-			if (dynamic_cast<Bullet*>(*i)->owner->getID() != player->getID()) {
+	
+	if (bulletObjects.size() > 0) {
+		i = 0;
+		while (i < bulletObjects.size()) {
+			bulletObjects[i]->Update();
 			
-				
-
-				//hit player
-				player->getHit(dynamic_cast<Bullet*>(*i)->getDamage());
-				std::cout << player->getLife() << std::endl;
-				if (player->getLife() == 0) {
-					std::cout << "game over" << std::endl;
-				}
-				bulletObjects.erase(i++);
-				b = true;
-			}//*/
-			
-		}
-
-		//destoy bullet if hit obstacle.
-		for (GameObject* go : sceneObjects) {
-			if (General::collisionCheck((*i)->getDestRect(), go->getDestRect())) {
-				sceneObjects.remove(go);
-				bulletObjects.erase(i++);
-				
-				b = true;
-				break;
-				
-			}
-
-		}
-
-		for (Enemy* enemy : enemyObjects) {
-			if (General::collisionCheck((*i)->getDestRect(), enemy->getDestRect())) {
-				
-				//hit enemy damage
-				if (dynamic_cast<Bullet*>(*i)->owner->getID() != enemy->getID()) {
-					enemy->getHit(dynamic_cast<Bullet*>(*i)->getDamage());
-					//enemy dies
-					if (enemy->getLife() == 0) enemyObjects.remove(enemy);
-					bulletObjects.erase(i++);
-					b = true;
-					break;
-				}
+			for (GameObject* go : sceneObjects) {
+				if (General::collisionCheck(bulletObjects[i]->getDestRect(), go->getDestRect())) {
 					
+					//mark delete bullet;
+					bulletObjects[i]->destroyed = true;
+				}
 				
-				
-
 			}
+			for (Enemy* enemy : enemyObjects) {
+				if (General::collisionCheck(bulletObjects[i]->getDestRect(), enemy->getDestRect())) {
 
+					//mark delete bullet;
+					bulletObjects[i]->destroyed = true;
+					//enemy damage
+					enemy->getHit(dynamic_cast<Bullet*>(bulletObjects[i])->getDamage());
+				}
+			}
+			if (!bulletObjects[i]->destroyed) i++;
+			else {
+				bulletObjects.erase(bulletObjects.begin() + i);
+			}
 		}
-
-
-		if (!b) i++;
-		
 	}
-
-	//*/
-	
 	player->Update();
 
 
@@ -196,7 +192,16 @@ void Game::update()
 void Game::render()
 {
 	SDL_RenderClear(renderer);
+	
+	for (GameObject* bullet : bulletObjects) {
+		bullet->Render();
+
+
+	}
+	
 	player->Render();
+
+
 	for (GameObject* go: sceneObjects) {
 		go->Render();
 	}
@@ -205,11 +210,7 @@ void Game::render()
 		enemy->Render();
 	}
 
-	for (GameObject* bullet : bulletObjects) {
-		bullet->Render();
-		
-		
-	}
+	
 
 	SDL_RenderPresent(renderer);
 }

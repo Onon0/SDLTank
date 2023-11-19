@@ -7,6 +7,8 @@ Enemy::Enemy(const char* texture, int x, int y, int width, int height, Player* p
 	this->player = player;
 }
 
+
+
 void Enemy::Update()
 {
 	if (isCollided) stop();
@@ -43,7 +45,7 @@ void Enemy::handleMovement()
 	h_speed = random * x_direction;
 	v_speed = (1 - random) * y_direction;
 	
-	//if(rand() % 2 == 0) fire();
+	//if(rand() % 5 == 0) fire();
 
 }
 

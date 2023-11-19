@@ -11,6 +11,7 @@ public:
 	virtual void Render();	
 	SDL_Rect* getDestRect();
 	int getID() { return id; };
+	bool destroyed;
 protected:
 	int id;
 	double xpos;

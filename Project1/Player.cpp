@@ -172,6 +172,7 @@ void Player::fire()
 void Player::getHit(double damage)
 {
 	life -= damage;
+	if (life <= 0) destroyed = true;
 }
 
 

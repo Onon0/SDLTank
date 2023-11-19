@@ -19,7 +19,7 @@ void Bullet::Update()
 	
 	
 	
-	distance = distance + deltaTime;
+	distance = distance + deltaTime * 0.5;
 	
 	xpos = start_x + vector_x * distance;
 	
