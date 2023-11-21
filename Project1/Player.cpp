@@ -60,11 +60,11 @@ void Player::Update()
 
 void Player::Render()
 {
-	SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
-	SDL_RenderDrawRect(Game::renderer, &destRect);
-	SDL_SetRenderDrawColor(Game::renderer, 255, 0, 0, 255);
-	SDL_RenderDrawRect(Game::renderer, &colRect);
-	SDL_SetRenderDrawColor(Game::renderer, 0, 0, 0, 255);
+	//SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
+	//SDL_RenderDrawRect(Game::renderer, &destRect);
+	//SDL_SetRenderDrawColor(Game::renderer, 255, 0, 0, 255);
+	//SDL_RenderDrawRect(Game::renderer, &colRect);
+	//SDL_SetRenderDrawColor(Game::renderer, 0, 0, 0, 255);
 	if(!(h_speed == 0 && v_speed == 0))
 		body_rot = h_speed == 0 ? 0 : 90;
 
@@ -96,6 +96,9 @@ void Player::handleEvents()
 	SDL_PollEvent(&event);
 	switch (event.type)
 	{
+	case SDL_MOUSEBUTTONDOWN:
+		fire();
+		break;
 	case SDL_KEYDOWN:
 		switch (event.key.keysym.sym) {
 		case SDLK_LEFT:
@@ -118,9 +121,6 @@ void Player::handleEvents()
 		case SDLK_s:
 			v_speed = speed;
 			h_speed = 0;
-			break;
-		case SDLK_q:
-			fire();
 			break;
 		}
 	
@@ -173,6 +173,17 @@ void Player::getHit(double damage)
 {
 	life -= damage;
 	if (life <= 0) destroyed = true;
+}
+
+void Player::setPos(double x, double y)
+{
+	xpos = x;
+	ypos = y;
+	if (followCamera) {
+		origin_x = x - static_cast<double>(screen_width / 2) + destRect.w * 0.5;
+		origin_y = y - static_cast<double>(screen_height / 2) + destRect.h * 0.5;
+	}
+
 }
 
 

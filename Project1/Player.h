@@ -22,10 +22,11 @@ public:
 	void handleEvents();
 	
 	void setHeadRot(int rot) { head_rot = rot; };
+	void setLife(double life) { this->life = life; };
 	double getLife() { return life; };
 	void fire();
 	void getHit(double damage);
-
+	virtual void setPos(double x, double y);
 protected:
 	double v_speed;
 	double h_speed;

@@ -35,10 +35,10 @@ SDL_Rect* GameObject::getDestRect()
 	return &destRect;
 }
 void GameObject::Render() {
-	SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
-	SDL_RenderDrawRect(Game::renderer, &destRect);
+	//SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
+	//SDL_RenderDrawRect(Game::renderer, &destRect);
 
-	SDL_SetRenderDrawColor(Game::renderer, 0, 0, 0, 255);
+	//SDL_SetRenderDrawColor(Game::renderer, 0, 0, 0, 255);
 	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
 }
 

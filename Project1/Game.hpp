@@ -13,6 +13,7 @@ extern double origin_y;
 extern int screen_width;
 extern int screen_height;
 extern bool isRunning;
+extern bool isPlaying; //not Paused
 extern double deltaTime;
 
 extern double stime;
@@ -27,7 +28,7 @@ public:
 	void update();
 	void render();
 	void clean();
-	
+	void reset();
 	static void spawnBullet(GameObject* obj);
 	static SDL_Renderer* renderer;
 	static std::list<GameObject*> sceneObjects;
