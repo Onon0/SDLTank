@@ -30,6 +30,12 @@ Button* button;
 TTF_Font* font;
 SDL_Texture* lifeDisplay;
 
+int spawnCount = 0;
+bool showSpawn = false;
+SDL_Texture* spawnCountDisplay;
+
+int spawnAvailable = -1;
+
 Game::Game()
 {
 	
@@ -74,8 +80,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	if (!font) {
 		std::cout << "Failed to open Font\n";
 	}
-	reset();
-
+	
+	isPlaying = false;
 	
 }
 
@@ -198,7 +204,22 @@ void Game::update()
 		}
 		
 	}
+	
+	if ((int)ceil(stime) % 10 == 0) {
 		
+		if (spawnAvailable != (int)ceil(stime)) {
+			showSpawn = true;
+			spawnAvailable = (int)ceil(stime);
+			std::cout << "new wave" << std::endl;
+			spawnWave();
+
+		}
+		
+		
+	}
+	else {
+		showSpawn = false;
+	}
 }
 
 void Game::render()
@@ -225,9 +246,11 @@ void Game::render()
 	if (!isPlaying) {
 		button->Render();
 	}
+	
 	SDL_Rect dest = { 0, 0, 200, 100 };
-	SDL_RenderCopy(renderer, lifeDisplay,NULL,  &dest );
-
+	if(isPlaying) SDL_RenderCopy(renderer, lifeDisplay,NULL,  &dest );
+	dest = { screen_height/ 2 - 225, screen_height / 2 - 150, 450, 300 };
+	if (showSpawn) SDL_RenderCopy(renderer, spawnCountDisplay, NULL, &dest);
 	SDL_RenderPresent(renderer);
 }
 
@@ -243,7 +266,7 @@ void Game::reset()
 {
 	sceneObjects.clear();
 	enemyObjects.clear();
-	player->setLife(100);
+	player->setLife(10000);
 	lifeDisplay = TextureManager::loadText(std::to_string(int(player->getLife())).c_str(), font);
 
 	
@@ -268,3 +291,30 @@ void Game::spawnBullet(GameObject* obj)
 	
 	bulletObjects.push_back(obj);
 }
+void Game::spawnWave() {
+	spawnCount++;
+	spawnCountDisplay = TextureManager::loadText(("Wave " + std::to_string(spawnCount)).c_str(), font);
+	int i = rand() % 10;
+	int j = rand() % 10;
+	int count = 0;
+	while (count < 4) {
+		i++;
+		if (i > 10) i = 0;
+		j++;
+		if (j > 10) j = 0;
+
+		if (map->grid[i][j] == 0) {
+			SDL_Point point = { i * 128, j * 128 };
+			if (General::pointDistance(player->getPos(), &point) > 200) {
+				Game::enemyObjects.push_back(new Enemy("assets/tank.png", 128 * i, 128 * j, 128, 128, player));
+				count++;
+			}
+			
+		}
+		
+	}
+		
+		
+
+}
+	

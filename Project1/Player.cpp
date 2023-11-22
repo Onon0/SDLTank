@@ -3,12 +3,14 @@
 #include "Bullet.h"
 #include <stdlib.h>
 
+double temp = 0;
+int speed_up = 300;
 Player::Player(const char* texture, int x, int y, int width, int height, bool followCamera) :GameObject(texture, x, y, width, height)
 {
 	h_speed = v_speed = 0;
 	head_rot = 0;
 	body_rot = 0;
-	speed = 0.1;
+	speed = 0.2;
 	
 	life = 100;
 	srcHeadRect.h = 64;
@@ -40,7 +42,7 @@ Player::Player(const char* texture, int x, int y, int width, int height, bool fo
 
 void Player::Update()
 {
-	
+	temp += deltaTime;
 	if (isCollided) return;
 	origin_x = origin_x + h_speed * deltaTime;
 	origin_y = origin_y + v_speed * deltaTime;
@@ -97,7 +99,11 @@ void Player::handleEvents()
 	switch (event.type)
 	{
 	case SDL_MOUSEBUTTONDOWN:
-		fire();
+		if (temp > 500) {
+			temp =0;
+			fire();
+		}
+		
 		break;
 	case SDL_KEYDOWN:
 		switch (event.key.keysym.sym) {
@@ -122,6 +128,17 @@ void Player::handleEvents()
 			v_speed = speed;
 			h_speed = 0;
 			break;
+		case SDLK_LSHIFT:
+		
+			if (speed_up > 0) {
+				speed_up--;
+				speed = 0.4;
+			}
+			else {
+				speed = 0.2;
+			}
+			
+			break;
 		}
 	
 
@@ -145,6 +162,9 @@ void Player::handleEvents()
 		case SDLK_s:
 			v_speed = 0;
 			break;
+		case SDLK_LSHIFT:
+			speed = 0.2;
+			break;
 		}
 
 
@@ -164,7 +184,7 @@ void Player::fire()
 	double b_x = origin_x + screen_width/2 + cosf(rad)  * 100;
 	double b_y = origin_y + screen_height / 2 + sinf(rad) * 100;
 	
-	Bullet* bullet = new Bullet(this, "assets/volume_ellipse.png", xpos + destRect.w/2, ypos + destRect.h / 2, rad, b_x, b_y, 10, 10);
+	Bullet* bullet = new Bullet(this, "assets/volume_ellipse.png", xpos + destRect.w/2, ypos + destRect.h / 2, rad, b_x, b_y, 20, 20);
 	
 	Game::spawnBullet(bullet);
 }

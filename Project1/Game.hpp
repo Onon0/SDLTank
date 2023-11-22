@@ -29,6 +29,7 @@ public:
 	void render();
 	void clean();
 	void reset();
+	void spawnWave();
 	static void spawnBullet(GameObject* obj);
 	static SDL_Renderer* renderer;
 	static std::list<GameObject*> sceneObjects;

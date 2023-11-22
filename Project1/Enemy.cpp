@@ -45,7 +45,7 @@ void Enemy::handleMovement()
 	h_speed = random * x_direction;
 	v_speed = (1 - random) * y_direction;
 	
-	if(rand() % 2 == 0) fire();
+	if(rand() % 3 == 0) fire();
 
 }
 

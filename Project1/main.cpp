@@ -19,8 +19,8 @@ int main(int argc, char* argv[]) {
 		LAST = NOW;
 		NOW = SDL_GetPerformanceCounter();
 		deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
-		
-		stime = (NOW)/SDL_GetPerformanceFrequency();
+		//real time second
+		stime += deltaTime/1000;
 		game->update();
 		game->render();
 	}

@@ -25,3 +25,13 @@ float General::deg2rad(float deg)
 {
     return deg * 3.14 / 180;
 }
+
+float General::calculateDistance(int x1, int y1, int x2, int y2)
+{
+    return sqrt(pow(x1 - x2 , 2) + pow(y1 - y2, 2));
+}
+
+float General::pointDistance(SDL_Point* A, SDL_Point* B)
+{
+    return sqrt(pow(A->x - B->x, 2) + pow(A->y - B->y, 2));
+}

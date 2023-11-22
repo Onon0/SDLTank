@@ -10,6 +10,7 @@ public:
 	virtual void Update();
 	virtual void Render();	
 	SDL_Rect* getDestRect();
+	SDL_Point* getPos();
 	int getID() { return id; };
 	bool destroyed;
 protected:

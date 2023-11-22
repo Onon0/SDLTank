@@ -34,6 +34,13 @@ SDL_Rect* GameObject::getDestRect()
 {
 	return &destRect;
 }
+SDL_Point* GameObject::getPos()
+{
+	SDL_Point point;
+	point.x = xpos;
+	point.y = ypos;
+	return &point;
+}
 void GameObject::Render() {
 	//SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
 	//SDL_RenderDrawRect(Game::renderer, &destRect);
