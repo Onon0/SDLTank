@@ -8,7 +8,7 @@ public:
 	void Update() override;
 	double getDistance() { return distance; };
 	double getDamage() { return damage; };
-
+	bool hitTarget;
 	GameObject* owner;
 private:
 	double start_x;

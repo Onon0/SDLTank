@@ -4,7 +4,7 @@
 #include "SDL.h"
 #include <iostream>
 
-Button::Button(const char* texture, int x, int y, int w, int h) :GameObject(texture, x, y, w, h)
+Button::Button(const char* texture, int x, int y, int w, int h) :GameObject(texture, 128, 128, x, y, w, h)
 {
 	destRect.x = x;
 	destRect.y = y;

@@ -5,7 +5,7 @@
 class GameObject
 {
 public:
-	GameObject(const char* texturesheet, int x, int y, int width, int height);
+	GameObject(const char* texturesheet, int src_w, int src_h, int x, int y, int width, int height);
 	~GameObject();
 	virtual void Update();
 	virtual void Render();	

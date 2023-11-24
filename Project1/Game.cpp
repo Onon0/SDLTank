@@ -148,45 +148,51 @@ void Game::update()
 	
 	if (bulletObjects.size() > 0) {
 		i = 0;
-		while (i < bulletObjects.size()) {
-			bulletObjects[i]->Update();
-			//bullet object interaction
-			for (GameObject* go : sceneObjects) {
-				if (General::collisionCheck(bulletObjects[i]->getDestRect(), go->getDestRect())) {
-					
-					//mark delete bullet;
-					bulletObjects[i]->destroyed = true;
-				}
-				
-			}
-			//bullet enemy interactiion
-			for (Enemy* enemy : enemyObjects) {
-				if (General::collisionCheck(bulletObjects[i]->getDestRect(), enemy->getDestRect()) && dynamic_cast<Bullet*>(bulletObjects[i])->owner->getID() != enemy->getID() ) {
+		
 
-					//mark delete bullet;
-					bulletObjects[i]->destroyed = true;
-					//enemy damage
-					enemy->getHit(dynamic_cast<Bullet*>(bulletObjects[i])->getDamage());
-				}
-			}
-			//bullet player interaction
-			if (General::collisionCheck(bulletObjects[i]->getDestRect(), player->getDestRect()) && dynamic_cast<Bullet*>(bulletObjects[i])->owner->getID() != player->getID()) {
-				//mark delete bullet;
-				bulletObjects[i]->destroyed = true;
-				//player damage
-				player->getHit(dynamic_cast<Bullet*>(bulletObjects[i])->getDamage());
-				lifeDisplay = TextureManager::loadText(std::to_string(int(player->getLife())).c_str(), font);
-				if (player->getLife() == 0) {
-					isPlaying = false;
-					
-				}
 
+			while (i < bulletObjects.size()) {
+				bulletObjects[i]->Update();
+				if (!dynamic_cast<Bullet*>(bulletObjects[i])->hitTarget) {
+					//bullet object interaction
+					for (GameObject* go : sceneObjects) {
+						if (General::collisionCheck(bulletObjects[i]->getDestRect(), go->getDestRect())) {
+
+							//mark hit target bullet;
+							dynamic_cast<Bullet*>(bulletObjects[i])->hitTarget = true;
+						}
+
+					}
+					//bullet enemy interactiion
+					for (Enemy* enemy : enemyObjects) {
+						if (General::collisionCheck(bulletObjects[i]->getDestRect(), enemy->getDestRect()) && dynamic_cast<Bullet*>(bulletObjects[i])->owner->getID() != enemy->getID()) {
+
+							//mark hit target bullet;
+							dynamic_cast<Bullet*>(bulletObjects[i])->hitTarget = true;
+							//enemy damage
+							enemy->getHit(dynamic_cast<Bullet*>(bulletObjects[i])->getDamage());
+						}
+					}
+					//bullet player interaction
+					if (General::collisionCheck(bulletObjects[i]->getDestRect(), player->getDestRect()) && dynamic_cast<Bullet*>(bulletObjects[i])->owner->getID() != player->getID()) {
+						//mark hit target bullet;
+						dynamic_cast<Bullet*>(bulletObjects[i])->hitTarget = true;
+						//player damage
+						player->getHit(dynamic_cast<Bullet*>(bulletObjects[i])->getDamage());
+						lifeDisplay = TextureManager::loadText(std::to_string(int(player->getLife())).c_str(), font);
+						if (player->getLife() == 0) {
+							isPlaying = false;
+
+						}
+
+					}
+				}
+				if (!bulletObjects[i]->destroyed) i++;
+				else {
+					bulletObjects.erase(bulletObjects.begin() + i);
+				}
 			}
-			if (!bulletObjects[i]->destroyed) i++;
-			else {
-				bulletObjects.erase(bulletObjects.begin() + i);
-			}
-		}
+		
 	}
 	player->Update();
 
@@ -273,7 +279,7 @@ void Game::reset()
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			if (map->grid[i][j] == 1) {
-				Game::sceneObjects.push_back(new GameObject("assets/volume_ellipse.png", 128 * i, 128 * j, 128, 128));
+				Game::sceneObjects.push_back(new GameObject("assets/volume_ellipse.png", 128, 128, 128 * i, 128 * j, 128, 128));
 			}
 			if (map->grid[i][j] == 2) {
 				Game::enemyObjects.push_back(new Enemy("assets/tank.png", 128 * i, 128 * j, 128, 128, player));

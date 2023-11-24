@@ -3,15 +3,15 @@
 #include "TextureManager.h"
 #include "Camera.h"
 #include <chrono>
-GameObject::GameObject(const char* texturesheet, int x, int y, int width, int height)
+GameObject::GameObject(const char* texturesheet, int src_w, int src_h, int x, int y, int width, int height)
 {
 	
 	this->objTexture = TextureManager::loadTexture(texturesheet);
 	id = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 	xpos = x;
 	ypos = y;
-	srcRect.h = 153;
-	srcRect.w = 153;
+	srcRect.h = src_h;
+	srcRect.w = src_w;
 	srcRect.x = 0;
 	srcRect.y = 0;
 	destRect.w = width;

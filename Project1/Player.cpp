@@ -5,7 +5,7 @@
 
 double temp = 0;
 int speed_up = 300;
-Player::Player(const char* texture, int x, int y, int width, int height, bool followCamera) :GameObject(texture, x, y, width, height)
+Player::Player(const char* texture, int x, int y, int width, int height, bool followCamera) :GameObject(texture, 128, 128, x, y, width, height)
 {
 	h_speed = v_speed = 0;
 	head_rot = 0;
@@ -184,7 +184,7 @@ void Player::fire()
 	double b_x = origin_x + screen_width/2 + cosf(rad)  * 100;
 	double b_y = origin_y + screen_height / 2 + sinf(rad) * 100;
 	
-	Bullet* bullet = new Bullet(this, "assets/volume_ellipse.png", xpos + destRect.w/2, ypos + destRect.h / 2, rad, b_x, b_y, 20, 20);
+	Bullet* bullet = new Bullet(this, "assets/bullet.png", xpos + destRect.w/2, ypos + destRect.h / 2, rad, b_x, b_y, 20, 20);
 	
 	Game::spawnBullet(bullet);
 }
