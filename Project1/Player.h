@@ -2,7 +2,7 @@
 
 #include "TextureManager.h"
 #include "GameObject.h"
-
+#include "SDL_mixer.h"
 class Player:public GameObject
 {
 public:
@@ -26,21 +26,25 @@ public:
 	double getLife() { return life; };
 	void fire();
 	void getHit(double damage);
+	void reset();
 	virtual void setPos(double x, double y);
+	bool isAlive;
 protected:
 	double v_speed;
 	double h_speed;
 
 	double speed;
 	double life;
+	double frame;
 	int xMouse, yMouse;
 	int body_rot;
 	int head_rot;
 
 	bool isCollided;
 	bool followCamera;
-
+	Mix_Chunk* shotSound;
 	SDL_Texture* head;
+	SDL_Texture* deadAnimation;
 	SDL_Rect colRect;
 	SDL_Rect srcHeadRect, destHeadRect;
 };

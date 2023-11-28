@@ -24,13 +24,24 @@ void Enemy::Update()
 	destHeadRect.x = destRect.x;
 	destHeadRect.y = destRect.y;
 
-	aim();
+	if(isAlive) aim();
+	else {
+		frame += deltaTime;
+		if (frame > 95) destroyed = true;
+		if (frame >= 10) srcRect.x = 64;
+		if (frame >= 30) srcRect.x = 64 * 2;
+		if (frame >= 50) srcRect.x = 64 * 3;
+		if (frame >= 75) srcRect.x = 64 * 4;
+	}
 
 }
 
 void Enemy::handleMovement()
 {
-	
+	if (!isAlive) {
+		stop();
+		return;
+	}
 	double random = rand() % 2 ? 1 : 0;
 	double x_direction, y_direction;
 	if (player != nullptr) {

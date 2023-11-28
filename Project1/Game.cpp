@@ -5,6 +5,7 @@
 #include "Button.h"
 #include "Map.h"
 #include "SDL_ttf.h"
+#include "SDL_mixer.h"
 #include <cmath>
 #include <string>
 std::list<GameObject*> Game::sceneObjects;
@@ -24,7 +25,7 @@ double stime = 0;
 bool isRunning = true;
 bool isPlaying = false;
 Map* map = new Map();
-int temp = -1;
+int cool_off = -1;
 Button* button;
 
 TTF_Font* font;
@@ -33,8 +34,9 @@ SDL_Texture* lifeDisplay;
 int spawnCount = 0;
 bool showSpawn = false;
 SDL_Texture* spawnCountDisplay;
-
 int spawnAvailable = -1;
+
+Mix_Chunk* music = NULL;
 
 Game::Game()
 {
@@ -52,7 +54,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		flags = SDL_WINDOW_FULLSCREEN;
 	}
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) { isRunning = false; return; }
-	
+	Mix_Init(MIX_INIT_MP3);
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
+	music = Mix_LoadWAV("assets/bg_music.wav");
 	std::cout << "Subsystem Initialized!..." << std::endl;
 	window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 	if (window) {
@@ -82,6 +86,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	}
 	
 	isPlaying = false;
+
+	Mix_PlayChannel(-1, music, -1);
 	
 }
 
@@ -89,11 +95,17 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 void Game::update()
 {
+	
 	if (!isPlaying) {
 		button->handleInput();
-		//button->Update();
 		return;
 	}
+
+	if (player->destroyed) {
+		isPlaying = false;
+
+	}
+
 	player->handleEvents();
 	
 	player->setCollided(false);
@@ -180,10 +192,10 @@ void Game::update()
 						//player damage
 						player->getHit(dynamic_cast<Bullet*>(bulletObjects[i])->getDamage());
 						lifeDisplay = TextureManager::loadText(std::to_string(int(player->getLife())).c_str(), font);
-						if (player->getLife() == 0) {
-							isPlaying = false;
+						//if (player->destroyed) {
+						//	isPlaying = false;
 
-						}
+						//}
 
 					}
 				}
@@ -199,8 +211,8 @@ void Game::update()
 
 	if((int)ceil(stime) % 2 == 0)
 	{
-		if (temp != (int)ceil(stime)) {
-			temp = (int)ceil(stime);
+		if (cool_off != (int)ceil(stime)) {
+			cool_off = (int)ceil(stime);
 			
 			for (Enemy* enemy : enemyObjects) {
 
@@ -254,14 +266,18 @@ void Game::render()
 	}
 	
 	SDL_Rect dest = { 0, 0, 200, 100 };
-	if(isPlaying) SDL_RenderCopy(renderer, lifeDisplay,NULL,  &dest );
-	dest = { screen_height/ 2 - 225, screen_height / 2 - 150, 450, 300 };
-	if (showSpawn) SDL_RenderCopy(renderer, spawnCountDisplay, NULL, &dest);
+	if (isPlaying) {
+		SDL_RenderCopy(renderer, lifeDisplay, NULL, &dest);
+		dest = { screen_height / 2 - 225, screen_height / 2 - 150, 450, 300 };
+		if (showSpawn) SDL_RenderCopy(renderer, spawnCountDisplay, NULL, &dest);
+	}
 	SDL_RenderPresent(renderer);
 }
 
 void Game::clean()
 {
+	
+	Mix_CloseAudio();
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
@@ -272,7 +288,7 @@ void Game::reset()
 {
 	sceneObjects.clear();
 	enemyObjects.clear();
-	player->setLife(10000);
+	player->reset();
 	lifeDisplay = TextureManager::loadText(std::to_string(int(player->getLife())).c_str(), font);
 
 	

@@ -17,6 +17,7 @@ GameObject::GameObject(const char* texturesheet, int src_w, int src_h, int x, in
 	destRect.w = width;
 	destRect.h = height;
 	destroyed = false;
+
 	
 }
 void GameObject::Update() {

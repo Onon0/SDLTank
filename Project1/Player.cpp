@@ -3,21 +3,21 @@
 #include "Bullet.h"
 #include <stdlib.h>
 
-double temp = 0;
+double cool_off = 0;
 int speed_up = 300;
-Player::Player(const char* texture, int x, int y, int width, int height, bool followCamera) :GameObject(texture, 128, 128, x, y, width, height)
+Player::Player(const char* texture, int x, int y, int width, int height, bool followCamera) :GameObject(texture, 64, 64, x, y, width, height)
 {
 	h_speed = v_speed = 0;
 	head_rot = 0;
 	body_rot = 0;
 	speed = 0.2;
-	
+	frame = 0;
 	life = 100;
 	srcHeadRect.h = 64;
 	srcHeadRect.w = 64;
 	srcHeadRect.x = 0;
 	srcHeadRect.y = 0;
-
+	isAlive = true;
 	destHeadRect.w = width;
 	destHeadRect.h = height;
 
@@ -35,30 +35,39 @@ Player::Player(const char* texture, int x, int y, int width, int height, bool fo
 	isCollided = false;
 
 	head = IMG_LoadTexture(Game::renderer, "assets/tank_top.png");
-	
+	deadAnimation = IMG_LoadTexture(Game::renderer, "assets/tank_destroy.png");
+	shotSound = Mix_LoadWAV("assets/shot.wav");
 }
 
 
 
 void Player::Update()
 {
-	temp += deltaTime;
+	
+	cool_off += deltaTime;
 	if (isCollided) return;
 	origin_x = origin_x + h_speed * deltaTime;
 	origin_y = origin_y + v_speed * deltaTime;
-	
-	xpos =  xpos + h_speed * deltaTime;
-	ypos =  ypos + v_speed * deltaTime;
+
+	xpos = xpos + h_speed * deltaTime;
+	ypos = ypos + v_speed * deltaTime;
 
 	destRect.x = xpos - origin_x;
 	destRect.y = ypos - origin_y;
 
 	destHeadRect.x = destRect.x;
 	destHeadRect.y = destRect.y;
-
-	
-	
+	if (!isAlive) {
+		frame += deltaTime;
+		if (frame > 95) destroyed = true;
+		if (frame >= 10) srcRect.x = 64;
+		if (frame >= 30) srcRect.x = 64 * 2;
+		if (frame >= 50) srcRect.x = 64 * 3;
+		if (frame >= 75) srcRect.x = 64 * 4;
+	}
 }
+	
+	
 
 void Player::Render()
 {
@@ -67,11 +76,16 @@ void Player::Render()
 	//SDL_SetRenderDrawColor(Game::renderer, 255, 0, 0, 255);
 	//SDL_RenderDrawRect(Game::renderer, &colRect);
 	//SDL_SetRenderDrawColor(Game::renderer, 0, 0, 0, 255);
-	if(!(h_speed == 0 && v_speed == 0))
-		body_rot = h_speed == 0 ? 0 : 90;
+	if (isAlive) {
+		if (!(h_speed == 0 && v_speed == 0))
+			body_rot = h_speed == 0 ? 0 : 90;
 
-	SDL_RenderCopyEx(Game::renderer, objTexture, &srcRect, &destRect, body_rot ,NULL, SDL_FLIP_NONE);
-	SDL_RenderCopyEx(Game::renderer, head, &srcHeadRect, &destHeadRect, head_rot, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(Game::renderer, objTexture, &srcRect, &destRect, body_rot, NULL, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(Game::renderer, head, &srcHeadRect, &destHeadRect, head_rot, NULL, SDL_FLIP_NONE);
+	}
+	else {
+		SDL_RenderCopy(Game::renderer, deadAnimation, &srcRect, &destRect);
+	}
 }
 
 
@@ -91,6 +105,10 @@ SDL_Rect* Player::GetCollisionBox()
 
 void Player::handleEvents()
 {
+	if (!isAlive) {
+		stop();
+		return;
+	}
 	SDL_GetMouseState(&xMouse, &yMouse);
 	int rot = General::calculateRotation(xMouse, yMouse, screen_width / 2, screen_height / 2);
 	setHeadRot(rot + 90);
@@ -99,8 +117,8 @@ void Player::handleEvents()
 	switch (event.type)
 	{
 	case SDL_MOUSEBUTTONDOWN:
-		if (temp > 500) {
-			temp =0;
+		if (cool_off > 500) {
+			cool_off =0;
 			fire();
 		}
 		
@@ -187,12 +205,21 @@ void Player::fire()
 	Bullet* bullet = new Bullet(this, "assets/bullet.png", xpos + destRect.w/2, ypos + destRect.h / 2, rad, b_x, b_y, 20, 20);
 	
 	Game::spawnBullet(bullet);
+	Mix_PlayChannel(-1, shotSound, 0);
 }
 
 void Player::getHit(double damage)
 {
 	life -= damage;
-	if (life <= 0) destroyed = true;
+	if (life <= 0) isAlive = false;
+}
+
+void Player::reset()
+{
+	setLife(100);
+	isAlive = true;
+	destroyed = false;
+	srcRect.x = 0;
 }
 
 void Player::setPos(double x, double y)
