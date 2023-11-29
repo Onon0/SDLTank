@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 	
 	
 	game = new Game();
-	game->init("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, false);
+	game->init("game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, false);
 
 	
 	while (isRunning) {

@@ -17,8 +17,8 @@ SDL_Renderer* Game::renderer = nullptr;
 double origin_x = 0;
 double origin_y = 0;
 
-int screen_width = 600;
-int screen_height = 600;
+int screen_width = 1000;
+int screen_height = 1000;
 
 double deltaTime = 0;
 double stime = 0;
@@ -223,7 +223,7 @@ void Game::update()
 		
 	}
 	
-	if ((int)ceil(stime) % 10 == 0) {
+	if ((int)ceil(stime) % 30 == 0) {
 		
 		if (spawnAvailable != (int)ceil(stime)) {
 			showSpawn = true;
@@ -295,7 +295,7 @@ void Game::reset()
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			if (map->grid[i][j] == 1) {
-				Game::sceneObjects.push_back(new GameObject("assets/volume_ellipse.png", 128, 128, 128 * i, 128 * j, 128, 128));
+				Game::sceneObjects.push_back(new GameObject("assets/block.png", 64, 64, 128 * i, 128 * j, 128, 128));
 			}
 			if (map->grid[i][j] == 2) {
 				Game::enemyObjects.push_back(new Enemy("assets/tank.png", 128 * i, 128 * j, 128, 128, player));
