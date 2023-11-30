@@ -57,6 +57,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	Mix_Init(MIX_INIT_MP3);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
 	music = Mix_LoadWAV("assets/bg_music.wav");
+	Mix_VolumeChunk(music, 25);
 	std::cout << "Subsystem Initialized!..." << std::endl;
 	window = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 	if (window) {
@@ -298,7 +299,7 @@ void Game::reset()
 				Game::sceneObjects.push_back(new GameObject("assets/block.png", 64, 64, 128 * i, 128 * j, 128, 128));
 			}
 			if (map->grid[i][j] == 2) {
-				Game::enemyObjects.push_back(new Enemy("assets/tank.png", 128 * i, 128 * j, 128, 128, player));
+				Game::enemyObjects.push_back(new Enemy("assets/enemy_tank.png", 128 * i, 128 * j, 128, 128, player));
 			}
 			if (map->grid[i][j] == 3) {
 				player->setPos(i * 128, j * 128);
@@ -328,7 +329,7 @@ void Game::spawnWave() {
 		if (map->grid[i][j] == 0) {
 			SDL_Point point = { i * 128, j * 128 };
 			if (General::pointDistance(player->getPos(), &point) > 200) {
-				Game::enemyObjects.push_back(new Enemy("assets/tank.png", 128 * i, 128 * j, 128, 128, player));
+				Game::enemyObjects.push_back(new Enemy("assets/enemy_tank.png", 128 * i, 128 * j, 128, 128, player));
 				count++;
 			}
 			

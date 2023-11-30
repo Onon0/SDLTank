@@ -5,6 +5,7 @@
 Enemy::Enemy(const char* texture, int x, int y, int width, int height, Player* player) : Player(texture, x, y, width, height, false)
 {
 	this->player = player;
+	head = IMG_LoadTexture(Game::renderer, "assets/enemy_tank_top.png");
 }
 
 
@@ -26,12 +27,16 @@ void Enemy::Update()
 
 	if(isAlive) aim();
 	else {
-		frame += deltaTime;
+		frame += deltaTime * 0.8;
 		if (frame > 95) destroyed = true;
-		if (frame >= 10) srcRect.x = 64;
+		{
+			if (frame >= 10) srcRect.x = 64;
+			Mix_PlayChannel(-1, deadSound, 0);
+		}
 		if (frame >= 30) srcRect.x = 64 * 2;
 		if (frame >= 50) srcRect.x = 64 * 3;
 		if (frame >= 75) srcRect.x = 64 * 4;
+		
 	}
 
 }

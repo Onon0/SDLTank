@@ -43,6 +43,7 @@ protected:
 	bool isCollided;
 	bool followCamera;
 	Mix_Chunk* shotSound;
+	Mix_Chunk* deadSound;
 	SDL_Texture* head;
 	SDL_Texture* deadAnimation;
 	SDL_Rect colRect;

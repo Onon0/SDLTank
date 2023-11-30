@@ -37,6 +37,7 @@ Player::Player(const char* texture, int x, int y, int width, int height, bool fo
 	head = IMG_LoadTexture(Game::renderer, "assets/tank_top.png");
 	deadAnimation = IMG_LoadTexture(Game::renderer, "assets/tank_destroy.png");
 	shotSound = Mix_LoadWAV("assets/shot.wav");
+	deadSound = Mix_LoadWAV("assets/death.wav");
 }
 
 
@@ -58,12 +59,17 @@ void Player::Update()
 	destHeadRect.x = destRect.x;
 	destHeadRect.y = destRect.y;
 	if (!isAlive) {
-		frame += deltaTime;
+
+		frame += deltaTime * 0.8;
 		if (frame > 95) destroyed = true;
-		if (frame >= 10) srcRect.x = 64;
+		if (frame >= 10) {
+			Mix_PlayChannel(-1, deadSound, 0);
+			srcRect.x = 64;
+		}
 		if (frame >= 30) srcRect.x = 64 * 2;
 		if (frame >= 50) srcRect.x = 64 * 3;
 		if (frame >= 75) srcRect.x = 64 * 4;
+		
 	}
 }
 	
